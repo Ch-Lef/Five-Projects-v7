@@ -89,7 +89,7 @@ public class Project4 {
                     continue;
                 }
 
-                if (!IsEmpty(cell - 1)) { // Έλεγχος αν η θέση είναι ήδη κατειλημμένη
+                if (!isEmpty(cell - 1)) { // Έλεγχος αν η θέση είναι ήδη κατειλημμένη
                     System.out.println("Η θέση έχει παιχτεί ήδη");
                     cell = 0; // Επαναφορά σε άκυρη τιμή για να ξαναζητήσει θέση
                 }
@@ -105,7 +105,7 @@ public class Project4 {
     }
 
     // Ελέγχει αν μια θέση είναι κενή
-    static boolean IsEmpty(int cell) {
+    static boolean isEmpty(int cell) {
         return gameBoard[cell] >= '1' && gameBoard[cell] <= '9'; // Οι κενές θέσεις είναι αριθμοί
     }
 
