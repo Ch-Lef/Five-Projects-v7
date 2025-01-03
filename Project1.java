@@ -1,23 +1,62 @@
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
+import java.io.*;
+import java.util.Arrays;
 
 public class Project1 {
+    static String file = "src/files/lotto.txt";
+    static int[] inputNumbers = new int[49];
+    static int indexOfInputNumbers = 0;
 
     public static void main(String[] args) {
+        final int LOTTO_SIZE = 6;
+        int[] inputNumbers = new int[49];
+        int pivot = 0;
+        int[] result = new int[LOTTO_SIZE];
+        int num;
+        int window;
 
-        File file = new File("input.txt");
+
+
         try {
-            BufferedReader br = new BufferedReader(new FileReader(file));
+            readInputNumbersFromFile();
+        } catch (Exception e) {
+            System.err.println("Το πρόγραμμα θα τερματίσει...");
+            System.exit(1);
+        //            throw new RuntimeException(e);
+        }
 
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+        Arrays.sort(inputNumbers);
+
+        for (int el : inputNumbers) {
+            System.out.print(el + " ");
         }
 
     }
 
-    private boolean isEven(int[] arr, int max) {
+    static void readInputNumbersFromFile() throws Exception {
+        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] tokens = line.split("\\s+");
+
+                for (String token : tokens) {
+                    if (!token.isEmpty()) { // Ensure no empty tokens are parsed
+                        inputNumbers[indexOfInputNumbers++] = Integer.parseInt(token);
+                    }
+
+                }
+                if (indexOfInputNumbers > inputNumbers.length) {
+                    // Αποφυγή υπερχείλισης του πίνακα
+                    throw new Exception("Το αρχείο περιέχει παραπάνω από 49 ακεραίους.");
+                }
+
+            }
+        } catch (Exception e) {
+            System.err.println("Σφάλμα στο αρχείο ακεραίων: "+file+"\n"+e.getMessage());
+            throw e;
+        }
+    }
+
+    boolean isEven(int[] arr, int max) {
         int count = 0;
         for (int v : arr) {
             if (v % 2 == 0) {
@@ -30,7 +69,7 @@ public class Project1 {
         return false;
     }
 
-    private boolean isOdd(int[] arr, int max) {
+    boolean isOdd(int[] arr, int max) {
         int count = 0;
         for (int v : arr) {
             if (v % 2 != 0) {
@@ -43,7 +82,7 @@ public class Project1 {
         return false;
     }
 
-    private boolean isContinuous(int[] arr, int max) {
+    boolean isContinuous(int[] arr, int max) {
         int count = 0;
         for (int i = 0; i < arr.length - 1; i++) {
             if (arr[i] + 1 == arr[i + 1]) {
@@ -56,7 +95,7 @@ public class Project1 {
         return false;
     }
 
-    private boolean isSameEnding(int[] arr, int max) {
+    boolean isSameEnding(int[] arr, int max) {
         int count = 0;
         for (int i = 0; i < arr.length - 1; i++) {
             if (arr[i] == arr[i + 1]) {
@@ -69,7 +108,7 @@ public class Project1 {
         return false;
     }
 
-    private boolean isSameTen(int[] arr, int max) {
+    boolean isSameTen(int[] arr, int max) {
         int count10 = 0;
         int count20 = 0;
         int count30 = 0;
